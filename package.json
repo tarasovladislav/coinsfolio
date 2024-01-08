@@ -19,7 +19,7 @@
     "bcrypt": "^5.1.1",
     "dayjs": "^1.11.10",
     "next": "14.0.4",
-    "next-auth": "^4.24.5",
+    "next-auth": "^5.0.0-beta.4",
     "react": "^18",
     "react-dom": "^18",
     "react-redux": "^9.0.4",

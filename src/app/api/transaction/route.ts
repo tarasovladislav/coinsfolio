@@ -8,16 +8,10 @@ export async function POST(req: NextRequest) {
         await connectToDatabase();
         const data = await req.json();
 
-        console.log(data)
         const { portfolioId, coinId, coinName, coinSymbol, transactionType, quantity, price, dateTime, notes } = data
-        // const existingCoin = await prisma.portfolioCoins.findUnique({ where: { id: coinId } });
-        // if (!existingCoin) {
-
-        const existingPortfolioCoin = await prisma.portfolioCoins.findFirst({ where: { coinId: coinId } });
-
-
-
-
+        console.log(portfolioId)
+        const existingPortfolioCoin = await prisma.portfolioCoins.findFirst({ where: { coinId: coinId, portfolioId:portfolioId } });
+        console.log(existingPortfolioCoin)
         if (!existingPortfolioCoin) {
             const newCoin = await prisma.portfolioCoins.create({
                 data:

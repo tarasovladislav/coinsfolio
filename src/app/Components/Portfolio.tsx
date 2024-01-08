@@ -9,15 +9,18 @@ import PortfolioTable from "./PortfolioTable";
 
 type Props = {};
 
-const Portfolio = (props: Props) => {
+const Portfolio = React.memo((props: Props) => {
   const dispatch = useDispatch<AppDispatch>();
+
   const { portfolio } = useSelector((state: RootState) => state.Portfolio);
   const { portfolios } = useSelector((state: RootState) => state.PortfolioList);
+//   useEffect(() => {
+//     if (portfolios.length > 0) {
+//       dispatch(setPortfolio(portfolios[0]));
+//     }
+//   }, [portfolio]);
 
-  useEffect(() => {
-    portfolios.length > 0 && dispatch(setPortfolio(portfolios[0]));
-  }, [portfolios]);
-
+//   console.log("rerender of portfolio.tsx");
   return (
     <div className="flex flex-1 flex-col items-center">
       {portfolio ? (
@@ -31,13 +34,13 @@ const Portfolio = (props: Props) => {
           </Button>
           <h1 className="text-3xl">{portfolio.name}</h1>
           <p>Your Balance is $0.</p>
-          <PortfolioTable />
+          {portfolio && <PortfolioTable />}
         </>
       ) : (
         <h1>Choose Portfolio</h1>
       )}
     </div>
   );
-};
+});
 
 export default Portfolio;

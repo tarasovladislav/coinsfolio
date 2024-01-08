@@ -18,3 +18,6 @@ const Home = (props: Props) => {
 };
 
 export default Home;
+function dispatch(arg0: { payload: any; type: "Portfolio/setPortfolio" }) {
+  throw new Error("Function not implemented.");
+}
