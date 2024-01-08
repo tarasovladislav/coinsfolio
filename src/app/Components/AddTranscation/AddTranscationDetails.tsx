@@ -29,7 +29,7 @@ const AddTranscationDetails = (props: Props) => {
   const [quantity, setQuantity] = useState("");
   const [totalSpend, setTotalSpend] = useState("");
   const [notes, setNotes] = useState("");
-
+  const [dateTime, setDateTime] = useState(dayjs());
   const disabledHours = () => {
     const hours = [];
     if (isToday(date)) {
@@ -54,13 +54,10 @@ const AddTranscationDetails = (props: Props) => {
     return date.isSame(dayjs(), "day");
   };
 
-  let dateTime = dayjs();
-
   useEffect(() => {
-    dateTime = date
-      .set("hour", time.hour())
-      .set("minute", time.minute())
-      .set("second", time.second());
+    setDateTime(
+      date.set("hour", time.hour()).set("minute", time.minute()).set("second", time.second())
+    );
     handleChange();
   }, [selectedCoin, date, time]);
 
