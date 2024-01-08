@@ -59,7 +59,7 @@ const AddTranscationDetails = (props: Props) => {
       date.set("hour", time.hour()).set("minute", time.minute()).set("second", time.second())
     );
     handleChange();
-  }, [selectedCoin, date, time]);
+  }, [selectedCoin, date, time, handleChange]);
 
   const handleChange = async () => {
     if (!selectedCoin) return;

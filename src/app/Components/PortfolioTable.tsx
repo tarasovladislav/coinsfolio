@@ -33,7 +33,7 @@ const PortfolioTable = (props: Props) => {
 
   useEffect(() => {
     portfolio && fetchTransactions();
-  }, [portfolio]);
+  }, [portfolio, fetchTransactions]);
 
   console.log("rendering portfolioTable.tsx");
 
