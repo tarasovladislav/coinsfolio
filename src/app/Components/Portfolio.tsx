@@ -9,7 +9,7 @@ import PortfolioTable from "./PortfolioTable";
 
 type Props = {};
 
-const Portfolio = React.memo((props: Props) => {
+const Portfolio = (props: Props) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { portfolio } = useSelector((state: RootState) => state.Portfolio);
@@ -34,6 +34,6 @@ const Portfolio = React.memo((props: Props) => {
       )}
     </div>
   );
-});
+};
 
 export default Portfolio;
