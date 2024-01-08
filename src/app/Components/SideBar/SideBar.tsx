@@ -18,7 +18,7 @@ const SideBar = (props: Props) => {
 
   useEffect(() => {
     dispatch(getPortfoliosAsync());
-  }, [dispatch]);
+  }, []);
 
   return (
     <div className="h-screen w-1/3 flex flex-col bg-gray-500 text-white pt-3">

@@ -33,7 +33,7 @@ const PortfolioTable = (props: Props) => {
 
   useEffect(() => {
     portfolio && fetchTransactions();
-  }, [portfolio, fetchTransactions]);
+  }, [portfolio]);
 
   console.log("rendering portfolioTable.tsx");
 
@@ -56,7 +56,7 @@ const PortfolioTable = (props: Props) => {
             </TableHead>
             <TableBody>
               {selectedPortfolioCoins.map((coin) => (
-                <PortfolioTableRow coin={coin} />
+                <PortfolioTableRow coin={coin} key={coin.id} />
               ))}
             </TableBody>
           </Table>
