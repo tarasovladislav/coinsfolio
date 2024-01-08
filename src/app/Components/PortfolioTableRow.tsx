@@ -34,7 +34,7 @@ const PortfolioTableRow = ({ coin }: Props) => {
     }, 0)
   ).toFixed(2);
 
-  const profitLoss = (holdings - avgBuyPrice).toFixed(2);
+//   const profitLoss = (holdings - avgBuyPrice).toFixed(2);
 
   return (
     <TableRow key={coin.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>

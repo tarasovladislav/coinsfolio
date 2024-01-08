@@ -13,14 +13,7 @@ const Portfolio = React.memo((props: Props) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { portfolio } = useSelector((state: RootState) => state.Portfolio);
-  const { portfolios } = useSelector((state: RootState) => state.PortfolioList);
-//   useEffect(() => {
-//     if (portfolios.length > 0) {
-//       dispatch(setPortfolio(portfolios[0]));
-//     }
-//   }, [portfolio]);
 
-//   console.log("rerender of portfolio.tsx");
   return (
     <div className="flex flex-1 flex-col items-center">
       {portfolio ? (
