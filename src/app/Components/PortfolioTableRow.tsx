@@ -17,24 +17,24 @@ type Props = {
 
 const PortfolioTableRow = ({ coin }: Props) => {
   const holdings = coin.transactions
-    .reduce((sum, tx) => {
+    .reduce((sum: number, tx: any) => {
       return sum + tx.quantity * coin.currentDetails.usd;
     }, 0)
     .toFixed(2);
-  const holdingCoins = coin.transactions.reduce((sum, tx) => {
+  const holdingCoins = coin.transactions.reduce((sum: number, tx: any) => {
     return sum + tx.quantity;
   }, 0);
 
   const avgBuyPrice = (
-    coin.transactions.reduce((sum, tx) => {
+    coin.transactions.reduce((sum: number, tx: any) => {
       return sum + tx.quantity * tx.price;
     }, 0) /
-    coin.transactions.reduce((totalQuantity, tx) => {
+    coin.transactions.reduce((totalQuantity: number, tx: any) => {
       return totalQuantity + tx.quantity;
     }, 0)
   ).toFixed(2);
 
-//   const profitLoss = (holdings - avgBuyPrice).toFixed(2);
+  //   const profitLoss = (holdings - avgBuyPrice).toFixed(2);
 
   return (
     <TableRow key={coin.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
