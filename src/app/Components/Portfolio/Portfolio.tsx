@@ -17,7 +17,7 @@ const Portfolio = ({ portfolio, portfolioCoins }: Props) => {
 
   const balance =
     portfolioCoins.length &&
-    portfolioCoins.reduce((acc, coin) => {
+    portfolioCoins.reduce((acc: number, coin: any) => {
       return acc + Number(coin.currentDetails.holdings);
     }, 0);
 
