@@ -31,7 +31,7 @@ const PortfolioTable = ({ portfolioCoins }: Props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {portfolioCoins.map((coin) => (
+              {portfolioCoins.map((coin:any) => (
                 <PortfolioTableRow coin={coin} key={coin.id} />
               ))}
             </TableBody>
