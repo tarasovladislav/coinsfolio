@@ -69,7 +69,7 @@ const PortfolioSlice = createSlice({
                 console.log("Transaction deleted");
                 state.selectedPortfolioCoins = state.selectedPortfolioCoins.map((coin) => {
                     if (coin.id === action.payload.portfolioCoinsId) {
-                        coin.transactions = coin.transactions.filter((tx) => tx.id !== action.payload.id)
+                        coin.transactions = coin.transactions.filter((tx: any) => tx.id !== action.payload.id)
                     }
                     return coin;
                 })
@@ -85,7 +85,7 @@ const PortfolioSlice = createSlice({
             });
     }
 });
-export const getPortfolioDetailsAsync = createAsyncThunk("portfolio/getPortfolioDetailsAsync", async (id) => {
+export const getPortfolioDetailsAsync = createAsyncThunk("portfolio/getPortfolioDetailsAsync", async (id: string) => {
     const response = await fetch(`${BASE_URL}/api/portfolio/details?id=${id}`);
     const data = await response.json();
     return data;
@@ -93,7 +93,7 @@ export const getPortfolioDetailsAsync = createAsyncThunk("portfolio/getPortfolio
 
 export const addTransactionAsync = createAsyncThunk(
     "portfolio/addTransactionAsync",
-    async (body) => {
+    async (body: any) => {
         const response = await fetch(`${BASE_URL}/api/transaction`, {
             method: "POST",
             body: JSON.stringify(body),
