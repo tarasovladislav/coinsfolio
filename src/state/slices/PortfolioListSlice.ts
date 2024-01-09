@@ -86,6 +86,8 @@ export const deletePortfolioAsync = createAsyncThunk(
 export const getPortfoliosAsync = createAsyncThunk("portfolio/getPortfolioAsync", async () => {
     const response = await fetch(`${BASE_URL}/api/portfolio`);
     const data = await response.json();
+    console.log(data);
+
     return data;
 });
 

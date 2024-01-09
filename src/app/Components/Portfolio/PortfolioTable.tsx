@@ -1,8 +1,4 @@
-"use client";
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "@/src/state/store";
-import { setSelectedPortfolioCoins } from "@/src/state/slices/PortfolioSlice";
+import React from "react";
 import {
   Paper,
   Table,
@@ -13,33 +9,13 @@ import {
   TableRow,
 } from "@mui/material";
 import PortfolioTableRow from "./PortfolioTableRow";
-type Props = {};
+type Props = { portfolioCoins: any };
 
-const PortfolioTable = (props: Props) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { selectedPortfolioCoins } = useSelector((state: RootState) => state.Portfolio);
-  const { portfolio } = useSelector((state: RootState) => state.Portfolio);
-
-  const fetchTransactions = async () => {
-    console.log("fetching transactions");
-    try {
-      const response = await fetch(`/api/portfolio/details?id=${portfolio.id}`);
-      const data = await response.json();
-      dispatch(setSelectedPortfolioCoins(data));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    portfolio && fetchTransactions();
-  }, [portfolio]);
-
+const PortfolioTable = ({ portfolioCoins }: Props) => {
   console.log("rendering portfolioTable.tsx");
 
   return (
-    portfolio &&
-    selectedPortfolioCoins.length > 0 && (
+    portfolioCoins.length > 0 && (
       <div className="p2 flex flex-col flex-1 self-stretch">
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 200 }} aria-label="simple table">
@@ -55,7 +31,7 @@ const PortfolioTable = (props: Props) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {selectedPortfolioCoins.map((coin) => (
+              {portfolioCoins.map((coin) => (
                 <PortfolioTableRow coin={coin} key={coin.id} />
               ))}
             </TableBody>

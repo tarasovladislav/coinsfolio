@@ -1,7 +1,6 @@
-import React from "react";
+import React, {useEffect} from "react";
 import SideBar from "./Components/SideBar/SideBar";
 import AddPortfolio from "./Components/AddPortfolio";
-import Portfolio from "./Components/Portfolio";
 import AddTranscation from "./Components/AddTranscation/AddTranscation";
 
 type Props = {};
@@ -12,7 +11,6 @@ const Home = (props: Props) => {
       <AddPortfolio />
       <AddTranscation />
       <SideBar />
-      <Portfolio />
     </main>
   );
 };

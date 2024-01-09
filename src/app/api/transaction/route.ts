@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
 
         const { portfolioId, coinId, coinName, coinSymbol, transactionType, quantity, price, dateTime, notes } = data
         console.log(portfolioId)
-        const existingPortfolioCoin = await prisma.portfolioCoins.findFirst({ where: { coinId: coinId, portfolioId:portfolioId } });
+        const existingPortfolioCoin = await prisma.portfolioCoins.findFirst({ where: { coinId: coinId, portfolioId: portfolioId } });
         console.log(existingPortfolioCoin)
         if (!existingPortfolioCoin) {
             const newCoin = await prisma.portfolioCoins.create({
@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
                     price: price,
                     dateTime: dateTime,
                     notes: notes,
-                    portfolioCoinsId: existingPortfolioCoin.id 
+                    portfolioCoinsId: existingPortfolioCoin.id
                 }
             });
             return NextResponse.json(newCoin, { status: 201 });
@@ -56,6 +56,21 @@ export async function POST(req: NextRequest) {
 
     } catch (error) {
         return NextResponse.json({ message: "Error in adding transaction" }, { status: 500 });
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
+export async function DELETE(req: NextRequest) {
+    //not tested
+    try {
+        await connectToDatabase();
+        const data = await req.json();
+        const { id } = data
+        const deletedTransaction = await prisma.transaction.delete({ where: { id: id } });
+        return NextResponse.json(deletedTransaction, { status: 201 });
+    } catch (error) {
+        return NextResponse.json({ message: "Error in deleting transaction" }, { status: 500 });
     } finally {
         await prisma.$disconnect();
     }

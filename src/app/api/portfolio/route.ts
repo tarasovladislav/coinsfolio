@@ -3,6 +3,7 @@ import { connectToDatabase } from "@/helpers/server-helpers";
 import { NextResponse, NextRequest } from "next/server";
 import { auth } from "@/lib/auth"
 export async function GET(req: NextRequest) {
+    const BASE_URL = process.env.BASE_URL
     try {
         await connectToDatabase();
         const session = await auth()
@@ -11,6 +12,7 @@ export async function GET(req: NextRequest) {
         }
         const user = await prisma.user.findFirst({ where: { email: session?.user?.email || "" } });
         const portfolios = await prisma.portfolio.findMany({ where: { userId: user?.id } });
+
         return NextResponse.json({ portfolios }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ message: "Error in fetching portfolios" }, { status: 500 });

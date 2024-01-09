@@ -28,7 +28,6 @@ const PortfolioSlice = createSlice({
             state.isModalOpen = false;
         },
         setPortfolio: (state, action: PayloadAction<any>) => {
-            console.log("action.payload", action.payload)
             state.portfolio = action.payload;
         },
         selectCoin: (state, action: PayloadAction<any>) => {

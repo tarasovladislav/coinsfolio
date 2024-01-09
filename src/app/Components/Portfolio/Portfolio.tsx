@@ -7,16 +7,23 @@ import { setPortfolio, openModal } from "@/src/state/slices/PortfolioSlice";
 import { Button } from "@mui/material";
 import PortfolioTable from "./PortfolioTable";
 
-type Props = {};
+type Props = {
+  portfolio: any;
+  portfolioCoins: any;
+};
 
-const Portfolio = (props: Props) => {
+const Portfolio = ({ portfolio, portfolioCoins }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const { portfolio } = useSelector((state: RootState) => state.Portfolio);
+  const balance =
+    portfolioCoins.length &&
+    portfolioCoins.reduce((acc, coin) => {
+      return acc + Number(coin.currentDetails.holdings);
+    }, 0);
 
   return (
     <div className="flex flex-1 flex-col items-center">
-      {portfolio ? (
+      {portfolio && (
         <>
           <Button
             variant="contained"
@@ -26,11 +33,9 @@ const Portfolio = (props: Props) => {
             Add Transcation
           </Button>
           <h1 className="text-3xl">{portfolio.name}</h1>
-          <p>Your Balance is $0.</p>
-          {portfolio && <PortfolioTable />}
+          <p>Your Balance is ${balance}.</p>
+          {portfolioCoins.length > 0 && <PortfolioTable portfolioCoins={portfolioCoins} />}
         </>
-      ) : (
-        <h1>Choose Portfolio</h1>
       )}
     </div>
   );

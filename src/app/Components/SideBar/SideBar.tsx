@@ -1,10 +1,10 @@
 "use client";
-import { Button, } from "@mui/material";
+import { Button } from "@mui/material";
 
 import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { openModal, getPortfoliosAsync,  } from "@/src/state/slices/PortfolioListSlice";
+import { openModal, getPortfoliosAsync } from "@/src/state/slices/PortfolioListSlice";
 import { AppDispatch, RootState } from "@/src/state/store";
 
 import LoadingSpinner from "@/src/app/Components/LoadingSpinner";
@@ -13,11 +13,10 @@ import SidebarPortfolioItem from "./SidebarPortfolioItem";
 type Props = {};
 const SideBar = (props: Props) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { isLoading, portfolios,  } = useSelector((state: RootState) => state.PortfolioList);
-
+  const { isLoading, portfolios } = useSelector((state: RootState) => state.PortfolioList);
 
   useEffect(() => {
-    dispatch(getPortfoliosAsync());
+    !portfolios.length && dispatch(getPortfoliosAsync());
   }, []);
 
   return (
