@@ -4,6 +4,13 @@ import AddPortfolio from "../../Components/AddPortfolio";
 import AddTranscation from "../../Components/AddTranscation/AddTranscation";
 import SideBar from "../../Components/SideBar/SideBar";
 import Portfolio from "../../Components/Portfolio/Portfolio";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/src/state/store";
+import {
+  setSelectedPortfolioCoins,
+  getPortfolioDetailsAsync,
+} from "@/src/state/slices/PortfolioSlice";
+import LoadingSpinner from "../../Components/LoadingSpinner";
 
 type Props = {
   params: {
@@ -12,34 +19,21 @@ type Props = {
 };
 
 const PortfolioPage = ({ params }: Props) => {
-  const [portfolio, setPortfolio] = useState(null);
-  const [portfolioCoins, setPortfolioCoins] = useState(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const { selectedPortfolioCoins, isLoading } = useSelector((state: RootState) => state.Portfolio);
   const id = params.id;
 
-  const fetchTransactions = async () => {
-    console.log("fetching transactions for id: ", id);
-    try {
-      const response = await fetch(`/api/portfolio/details?id=${id}`);
-      const data = await response.json();
-      setPortfolio(data.portfolio);
-      setPortfolioCoins(data.result);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    fetchTransactions();
+    dispatch(getPortfolioDetailsAsync(id));
   }, []);
 
   return (
     <main className="flex flex-row">
+          {isLoading && <LoadingSpinner isLoading={isLoading} />}
       <AddPortfolio />
       <SideBar />
       <AddTranscation />
-      {portfolioCoins && portfolio && (
-        <Portfolio portfolio={portfolio} portfolioCoins={portfolioCoins} />
-      )}
+      <Portfolio />
     </main>
   );
 };

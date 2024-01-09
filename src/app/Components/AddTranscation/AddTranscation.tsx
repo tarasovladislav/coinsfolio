@@ -47,9 +47,4 @@ const AddTranscation = (props: Props) => {
   );
 };
 
-{
-  /* <Button variant="contained" className="self-center bg-black" onClick={() => {}}>
-  Add Transcation
-</Button> */
-}
 export default AddTranscation;

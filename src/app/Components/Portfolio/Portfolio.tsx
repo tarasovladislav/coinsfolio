@@ -1,25 +1,23 @@
-"use client";
 import React, { useEffect } from "react";
-
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/src/state/store";
 import { setPortfolio, openModal } from "@/src/state/slices/PortfolioSlice";
 import { Button } from "@mui/material";
 import PortfolioTable from "./PortfolioTable";
 
-type Props = {
-  portfolio: any;
-  portfolioCoins: any;
-};
+type Props = {};
 
-const Portfolio = ({ portfolio, portfolioCoins }: Props) => {
+const Portfolio = ({}: Props) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { selectedPortfolioCoins, portfolio } = useSelector((state: RootState) => state.Portfolio);
 
   const balance =
-    portfolioCoins.length &&
-    portfolioCoins.reduce((acc: number, coin: any) => {
-      return acc + Number(coin.currentDetails.holdings);
-    }, 0);
+    selectedPortfolioCoins.length &&
+    selectedPortfolioCoins
+      .reduce((acc: number, coin: any) => {
+        return acc + Number(coin.currentDetails.holdings);
+      }, 0)
+      .toFixed(2);
 
   return (
     <div className="flex flex-1 flex-col items-center">
@@ -34,7 +32,8 @@ const Portfolio = ({ portfolio, portfolioCoins }: Props) => {
           </Button>
           <h1 className="text-3xl">{portfolio.name}</h1>
           <p>Your Balance is ${balance}.</p>
-          {portfolioCoins.length > 0 && <PortfolioTable portfolioCoins={portfolioCoins} />}
+          {selectedPortfolioCoins.length > 0 && <>Graph</>}
+          {selectedPortfolioCoins.length > 0 && <PortfolioTable />}
         </>
       )}
     </div>

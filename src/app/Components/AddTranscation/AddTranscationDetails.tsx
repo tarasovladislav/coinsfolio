@@ -12,7 +12,11 @@ import {
   ButtonGroup,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
-import { closeModal } from "@/src/state/slices/PortfolioSlice";
+import {
+  closeModal,
+  addTransactionAsync,
+  getPortfolioDetailsAsync,
+} from "@/src/state/slices/PortfolioSlice";
 import { AppDispatch, RootState } from "@/src/state/store";
 import dayjs from "dayjs";
 import { TimePicker, DatePicker } from "antd";
@@ -59,7 +63,7 @@ const AddTranscationDetails = (props: Props) => {
       date.set("hour", time.hour()).set("minute", time.minute()).set("second", time.second())
     );
     handleChange();
-  }, [selectedCoin, date, time,]);
+  }, [selectedCoin, date, time]);
 
   const handleChange = async () => {
     if (!selectedCoin) return;
@@ -96,12 +100,8 @@ const AddTranscationDetails = (props: Props) => {
         dateTime: dateTime,
         notes: notes,
       };
-      const response = await fetch(`/api/transaction`, {
-        method: "POST",
-        body: JSON.stringify(bodyObj),
-      });
-      const data = await response.json();
-      console.log(data);
+      await dispatch(addTransactionAsync(bodyObj));
+      await dispatch(getPortfolioDetailsAsync(portfolio.id));
     } catch (error) {
       console.log(error);
     }

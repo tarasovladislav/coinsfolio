@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import SideBar from "./Components/SideBar/SideBar";
 import AddPortfolio from "./Components/AddPortfolio";
 import AddTranscation from "./Components/AddTranscation/AddTranscation";
@@ -16,6 +16,3 @@ const Home = (props: Props) => {
 };
 
 export default Home;
-function dispatch(arg0: { payload: any; type: "Portfolio/setPortfolio" }) {
-  throw new Error("Function not implemented.");
-}
