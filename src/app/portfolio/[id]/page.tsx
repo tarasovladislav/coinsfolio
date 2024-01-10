@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import AddPortfolio from "../../Components/AddPortfolio";
+import AddPortfolio from "../../Components/Portfolio/AddPortfolio";
 import AddTranscation from "../../Components/AddTranscation/AddTranscation";
 import SideBar from "../../Components/SideBar/SideBar";
 import Portfolio from "../../Components/Portfolio/Portfolio";
@@ -28,8 +28,8 @@ const PortfolioPage = ({ params }: Props) => {
   }, []);
 
   return (
-    <main className="flex flex-row">
-          {isLoading && <LoadingSpinner isLoading={isLoading} />}
+    <main className="flex flex-row flex-grow min-h-grow">
+      {isLoading && <LoadingSpinner isLoading={isLoading} />}
       <AddPortfolio />
       <SideBar />
       <AddTranscation />

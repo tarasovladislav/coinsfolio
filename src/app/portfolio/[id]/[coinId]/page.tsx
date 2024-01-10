@@ -1,8 +1,8 @@
-"use client"
-import AddPortfolio from "@/src/app/Components/AddPortfolio";
+"use client";
+import AddPortfolio from "@/src/app/Components/Portfolio/AddPortfolio";
 import AddTranscation from "@/src/app/Components/AddTranscation/AddTranscation";
 import SideBar from "@/src/app/Components/SideBar/SideBar";
-import Transactions from "@/src/app/Components/Transactions";
+import Transactions from "@/src/app/Components/Transactions/Transactions";
 import React from "react";
 import { AppDispatch, RootState } from "@/src/state/store";
 import { useDispatch, useSelector } from "react-redux";

@@ -1,6 +1,6 @@
 import React from "react";
 import SideBar from "./Components/SideBar/SideBar";
-import AddPortfolio from "./Components/AddPortfolio";
+import AddPortfolio from "./Components/Portfolio/AddPortfolio";
 import AddTranscation from "./Components/AddTranscation/AddTranscation";
 
 type Props = {};

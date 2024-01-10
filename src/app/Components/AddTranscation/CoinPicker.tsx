@@ -1,6 +1,6 @@
 import React, { useState, useEffect, use } from "react";
 import { Typography, TextField } from "@mui/material";
-import CoinSearchResults from "../CoinSearchResults";
+import CoinSearchResults from "./CoinSearchResults";
 type Props = {};
 
 const CoinPicker = (props: Props) => {

@@ -21,7 +21,12 @@ const SideBar = (props: Props) => {
 
   const initialLoad = async () => {
     dispatch(getPortfoliosAsync()).then((ab) => {
-      if (ab.meta.requestStatus === "rejected" || ab.payload.portfolios.length === 0) return;
+      if (
+        ab.meta.requestStatus === "rejected" ||
+        !ab.payload?.portfolios ||
+        ab.payload.portfolios.length === 0
+      )
+        return;
       dispatch(setPortfolio(ab.payload.portfolios[0]));
       router.push(`/portfolio/${ab.payload.portfolios[0].id}`);
     });
@@ -32,7 +37,7 @@ const SideBar = (props: Props) => {
   }, []);
 
   return (
-    <div className="h-screen w-1/3 flex flex-col bg-gray-500 text-white pt-3">
+    <div className=" w-96 flex flex-col bg-gray-500 text-white pt-3 ">
       {isLoading ? (
         <LoadingSpinner isLoading={isLoading} />
       ) : (

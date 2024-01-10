@@ -15,7 +15,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { closeModal } from "@/src/state/slices/PortfolioSlice";
 import { AppDispatch, RootState } from "@/src/state/store";
-import CoinSearchResults from "../CoinSearchResults";
+import CoinSearchResults from "./CoinSearchResults";
 
 import dayjs from "dayjs";
 import { TimePicker, DatePicker } from "antd";

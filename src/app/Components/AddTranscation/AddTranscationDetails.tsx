@@ -1,14 +1,8 @@
 import React, { useState, useEffect, use } from "react";
 import {
-  Modal,
-  Box,
   Typography,
-  Input,
   Button,
-  Autocomplete,
   TextField,
-  List,
-  ListItem,
   ButtonGroup,
 } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
@@ -16,6 +10,7 @@ import {
   closeModal,
   addTransactionAsync,
   getPortfolioDetailsAsync,
+  selectCoin
 } from "@/src/state/slices/PortfolioSlice";
 import { AppDispatch, RootState } from "@/src/state/store";
 import dayjs from "dayjs";
@@ -102,6 +97,7 @@ const AddTranscationDetails = (props: Props) => {
       };
       await dispatch(addTransactionAsync(bodyObj));
       await dispatch(getPortfolioDetailsAsync(portfolio.id));
+      await dispatch(selectCoin(null))
     } catch (error) {
       console.log(error);
     }
