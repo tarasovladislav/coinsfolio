@@ -42,7 +42,6 @@ export async function GET(req: NextRequest) {
         if (!session) {
             return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
         }
-        const user = await prisma.user.findFirst({ where: { email: session?.user?.email || "" } });
         const { searchParams } = new URL(req.url);
 
         const portfolioCoinId = searchParams.get("portfolioCoinId");
@@ -53,12 +52,33 @@ export async function GET(req: NextRequest) {
 
         const coin = portolioWithCoins[0].coinId
 
+        const endDate = dayjs().unix();
         const lowestDate = portolioWithCoins.reduce((a, b) => {
             return a.dateTime < b.dateTime ? a : b;
         }).dateTime
-        const startDate = dayjs(lowestDate).unix();
+        let startDate = dayjs(lowestDate).unix();
+        switch (days) {
+            case "1":
+                startDate = dayjs().subtract(1, 'day').unix();
+                break;
+            case "7":
+                startDate = dayjs().subtract(7, 'day').unix();
+                break;
+            case "30":
+                startDate = dayjs().subtract(30, 'day').unix();
+                break;
+            case "90":
+                startDate = dayjs().subtract(90, 'day').unix();
+                break;
+            case "All":
+                startDate = dayjs(lowestDate).unix();
+                break;
+            default:
+                break;
+        }
 
-        const endDate = dayjs().unix();
+        // const startDate = dayjs(lowestDate).unix();
+
         const coinsHistoryResponse = await fetch(`https://pro-api.coingecko.com/api/v3/coins/${coin}/market_chart/range?vs_currency=usd&from=${startDate}&to=${endDate}&x_cg_pro_api_key=${process.env.COINGECKO_API}`, {
             method: 'GET',
         });

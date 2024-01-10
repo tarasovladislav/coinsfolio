@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import LoadingSpinner from "@/src/app/Components/LoadingSpinner";
 import SidebarPortfolioItem from "./SidebarPortfolioItem";
 
+
 type Props = {};
 const SideBar = (props: Props) => {
   const router = useRouter();
@@ -36,6 +37,7 @@ const SideBar = (props: Props) => {
     !portfolios.length && initialLoad();
   }, []);
 
+
   return (
     <div className=" w-96 flex flex-col bg-gray-500 text-white pt-3 ">
       {isLoading ? (
@@ -55,6 +57,7 @@ const SideBar = (props: Props) => {
           return <SidebarPortfolioItem portfolio={portfolio} key={portfolio.id} />;
         })}
       </div>
+
     </div>
   );
 };
