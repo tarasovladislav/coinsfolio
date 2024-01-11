@@ -53,22 +53,33 @@ export async function GET(req: NextRequest) {
         const coin = portolioWithCoins[0].coinId
 
         const endDate = dayjs().unix();
+
         const lowestDate = portolioWithCoins.reduce((a, b) => {
             return a.dateTime < b.dateTime ? a : b;
         }).dateTime
+
         let startDate = dayjs(lowestDate).unix();
         switch (days) {
             case "1":
-                startDate = dayjs().subtract(1, 'day').unix();
+                if (dayjs(lowestDate).unix() < dayjs().subtract(1, 'day').unix()) {
+                    startDate = dayjs().subtract(1, 'day').unix();
+                }
                 break;
             case "7":
-                startDate = dayjs().subtract(7, 'day').unix();
+                if (dayjs(lowestDate).unix() < dayjs().subtract(7, 'day').unix()) {
+                    startDate = dayjs().subtract(7, 'day').unix();
+                }
                 break;
             case "30":
-                startDate = dayjs().subtract(30, 'day').unix();
+                if (dayjs(lowestDate).unix() < dayjs().subtract(30, 'day').unix()) {
+
+                    startDate = dayjs().subtract(30, 'day').unix();
+                }
                 break;
             case "90":
-                startDate = dayjs().subtract(90, 'day').unix();
+                if (dayjs(lowestDate).unix() < dayjs().subtract(90, 'day').unix()) {
+                    startDate = dayjs().subtract(90, 'day').unix();
+                }
                 break;
             case "All":
                 startDate = dayjs(lowestDate).unix();

@@ -1,4 +1,4 @@
-import React, { use, useEffect, useRef, useState } from "react";
+import React from "react";
 import Chart, { defaults } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
 type Props = {
@@ -23,6 +23,25 @@ const ChartComponent = ({ data }: Props) => {
               fill: true,
             },
           ],
+        }}
+        options={{
+          scales: {
+            y: {
+              ticks: {
+                callback: function (value: any, index: any, values: any) {
+                  return "$" + value;
+                },
+              },
+            },
+            x: {
+              ticks: {
+                autoSkip: true,
+                maxTicksLimit: 8,
+                align: "start",
+                maxRotation: 0,
+              },
+            },
+          },
         }}
       />
     </div>

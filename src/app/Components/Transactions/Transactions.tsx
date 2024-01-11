@@ -16,9 +16,7 @@ type Props = {
 const Transactions = (props: Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const { selectedPortfolioCoins } = useSelector((state: RootState) => state.Portfolio);
-  console.log(selectedPortfolioCoins, "selectedPortfolioCoins");
   const tx = selectedPortfolioCoins.find((coin: any) => coin.id === props.coinId);
-  console.log(tx, "tx");
   const router = useRouter();
   const [historyDays, setHistoryDays] = useState<string | number>("All");
 
@@ -35,6 +33,7 @@ const Transactions = (props: Props) => {
   }, []);
 
   const [data, setData] = useState(null);
+  
   useEffect(() => {
     const fetchHistory = async () => {
       try {
@@ -49,7 +48,6 @@ const Transactions = (props: Props) => {
     fetchHistory();
   }, [historyDays]);
 
-  console.log(selectedPortfolioCoins, "selectedPortfolioCoins");
   return (
     <div className="flex flex-1 flex-col items-center">
       {tx && (
