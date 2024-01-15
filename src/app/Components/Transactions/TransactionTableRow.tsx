@@ -8,41 +8,42 @@ type Props = {
   tx: any;
 };
 import dayjs from "dayjs";
+import PopConfirm from "../PopConfirm";
 const TransactionTableRow = ({ tx }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
   const formattedDateTime = dayjs(tx.dateTime).format("MMM DD, YYYY, HH:MM");
-
-  const handleDelete = async () => {
-    dispatch(deleteTransactionAsync(tx.id));
-  };
 
   return (
     <>
       <TableRow
         key={tx.name}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-        // onClick={() => {
-        //   console.log("clicked");
-        // }}
       >
         <TableCell component="th" scope="row" className="flex flex-col">
           <span className="font-semibold">{tx.type}</span>
           <span className="text-gray-500"> {formattedDateTime}</span>
         </TableCell>
         <TableCell align="right">${tx.price}</TableCell>
-        <TableCell align="right">{tx.quantity}</TableCell>
+        <TableCell align="right">{parseFloat(tx.quantity)}</TableCell>
         <TableCell
           align="right"
           onClick={(event) => {
             event.stopPropagation();
           }}
         >
-          <div className="flex justify-end">
-            <BsTrash3
-              onClick={() => {
-                handleDelete();
+          <div className="flex flex-0 justify-end">
+            <PopConfirm
+              onConfirm={async () => {
+                dispatch(deleteTransactionAsync(tx.id));
               }}
-            />
+              title="Delete the transaction"
+              description="Are you sure you want to delete this transaction?"
+              rest={{ okText: "Delete", placement: "topRight", okType: "danger" }}
+            >
+              <div className=" cursor-pointer">
+                <BsTrash3 />
+              </div>
+            </PopConfirm>
           </div>
         </TableCell>
       </TableRow>

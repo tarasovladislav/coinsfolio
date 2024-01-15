@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/src/state/store";
 import { setPortfolio } from "@/src/state/slices/PortfolioSlice";
 import Link from "next/link";
+import PopConfirm from "../PopConfirm";
 type Props = {
   portfolio: any;
 };
@@ -21,14 +22,16 @@ const SidebarPortfolioItem = ({ portfolio }: Props) => {
       >
         <div className="font-semibold">{portfolio.name}</div>
       </Link>
-      <button
-        onClick={() => {
-          dispatch(deletePortfolioAsync(portfolio.id));
+      <PopConfirm
+        onConfirm={async () => {
+          await dispatch(deletePortfolioAsync(portfolio.id));
         }}
-        className="bg-red-500 p-2 rounded m-2"
+        title="Delete the portfolio"
+        description="Are you sure you want to delete this portfolio?"
+        rest={{ okText: "Delete", placement: "bottom", okType: "danger" }}
       >
-        Delete
-      </button>
+        <button className="bg-red-500 p-2 rounded m-2">Delete</button>
+      </PopConfirm>
     </div>
   );
 };

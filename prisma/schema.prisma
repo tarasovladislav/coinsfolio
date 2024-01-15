@@ -32,7 +32,7 @@ model Portfolio {
 
 model PortfolioCoins {
     id           String        @id @default(auto()) @map("_id") @db.ObjectId
-    coinId       String        
+    coinId       String
     coinName     String
     coinSymbol   String
     transactions Transaction[]
@@ -54,4 +54,5 @@ model Transaction {
     notes            String?
     PortfolioCoins   PortfolioCoins? @relation(fields: [portfolioCoinsId], references: [id])
     portfolioCoinsId String?         @db.ObjectId
+
 }

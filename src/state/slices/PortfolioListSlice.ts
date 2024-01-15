@@ -31,6 +31,7 @@ const PortfolioListSlice = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(addPortfolioAsync.pending, () => {
+
                 console.log("Adding is pending...");
             })
             .addCase(addPortfolioAsync.fulfilled, (state, action: PayloadAction<any>) => {
@@ -52,6 +53,7 @@ const PortfolioListSlice = createSlice({
                 console.log("Deleting is pending...");
             })
             .addCase(deletePortfolioAsync.fulfilled, (state, action: PayloadAction<any>) => {
+
                 console.log("Portfolio deleted");
                 state.portfolios = state.portfolios.filter(
                     (portfolio) => portfolio.id !== action.payload.id

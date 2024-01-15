@@ -17,6 +17,7 @@ const TransactionTable = ({ transactions }: Props) => {
   return (
     transactions.length > 0 && (
       <div className="p2 flex flex-col flex-1 self-stretch">
+        <p className="text-xl my-5 font-semibold">Transactions</p>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 200 }} aria-label="simple table">
             <TableHead>

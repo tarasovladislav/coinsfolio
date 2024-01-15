@@ -2,8 +2,6 @@ import { NextResponse, NextRequest } from "next/server";
 import dayjs from "dayjs";
 
 export async function POST(req: NextRequest) {
-    const COINGECKO_API = process.env.COINGECKO_API;
-    console.log(COINGECKO_API)
     try {
         const isToday = (date: dayjs.Dayjs) => {
             return dayjs(date).isSame(dayjs(), "day");

@@ -127,6 +127,6 @@ export const deleteCoinAsync = createAsyncThunk(
     }
 )
 
-export const { setPortfolio, openModal, closeModal, selectCoin, setSelectedPortfolioCoins, } = PortfolioSlice.actions;
+export const { setPortfolio, openModal, closeModal, selectCoin, setSelectedPortfolioCoins, setSelectedCoinPrice } = PortfolioSlice.actions;
 
 export default PortfolioSlice.reducer;

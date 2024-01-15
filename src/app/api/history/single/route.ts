@@ -9,11 +9,12 @@ export async function GET(req: NextRequest) {
 
         tokenHistory.forEach(([unixtime, price]) => {
             const holdingsAtTime = calculateHoldingsAtTime(transactions, unixtime);
-            const valueAtTime = holdingsAtTime * price;
+            const valueAtTime = holdingsAtTime.holdings * price;
 
             result.push({
                 timeDate: unixtime,
                 usd: valueAtTime,
+                coins: holdingsAtTime.coinsAtTime,
             });
         });
 
@@ -22,20 +23,24 @@ export async function GET(req: NextRequest) {
 
     function calculateHoldingsAtTime(transactions, targetTime) {
         let holdings = 0;
-
+        let coinsAtTime = 0;
         transactions.forEach((transaction) => {
             const { type, dateTime, quantity } = transaction;
 
             if (dateTime <= targetTime) {
                 if (type === 'Buy') {
+                    coinsAtTime += quantity;
                     holdings += quantity;
                 } else if (type === 'Sell') {
+                    coinsAtTime -= quantity;
                     holdings -= quantity;
                 }
             }
         });
-        return holdings;
+        return {holdings, coinsAtTime};
     }
+
+    
     try {
         await connectToDatabase();
         const session = await auth()

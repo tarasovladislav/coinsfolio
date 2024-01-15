@@ -5,6 +5,7 @@ import { BsTrash3 } from "react-icons/bs";
 import { useDispatch } from "react-redux";
 import { deleteCoinAsync } from "@/src/state/slices/PortfolioSlice";
 import { AppDispatch } from "@/src/state/store";
+import PopConfirm from "../PopConfirm";
 type Props = {
   coin: any;
 };
@@ -12,14 +13,13 @@ type Props = {
 const PortfolioTableRow = ({ coin }: Props) => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-
   return (
     <>
       <TableRow
-        key={coin.name}
+        key={coin.coinName}
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         onClick={() => {
-          router.push(`/portfolio/${coin.portfolioId}/${coin.id}`);
+          router.push(`/portfolio/${coin.portfolioId}/${coin.coinName}`);
           console.log("clicked");
         }}
       >
@@ -42,7 +42,7 @@ const PortfolioTableRow = ({ coin }: Props) => {
           ${coin.currentDetails.holdings}
           <br />
           <span className="text-gray-500 text-xs">
-            {coin.currentDetails.holdingCoins} {coin.coinSymbol.toUpperCase()}
+            {coin.currentDetails.holdingCoins.toFixed(2)} {coin.coinSymbol.toUpperCase()}
           </span>
         </TableCell>
 
@@ -54,13 +54,19 @@ const PortfolioTableRow = ({ coin }: Props) => {
             event.stopPropagation();
           }}
         >
-          <div
-            className="flex justify-end"
-            onClick={() => {
-              dispatch(deleteCoinAsync(coin.id));
-            }}
-          >
-            <BsTrash3 />
+          <div className="flex flex-0 justify-end">
+            <PopConfirm
+              onConfirm={async () => {
+                await dispatch(deleteCoinAsync(coin.id));
+              }}
+              title="Delete the coin"
+              description="Are you sure you want to delete this coin?"
+              rest={{ okText: "Delete", placement: "topRight", okType: "danger" }}
+            >
+              <div className=" cursor-pointer">
+                <BsTrash3 />
+              </div>
+            </PopConfirm>
           </div>
         </TableCell>
       </TableRow>

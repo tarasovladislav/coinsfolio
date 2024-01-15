@@ -8,7 +8,9 @@ const Header = async (props: Props) => {
   const session = await auth();
   return (
     <Toolbar className="bg-gray-700 flex justify-between">
-      <Link href={"/"} className="text-3xl font-semibold text-zinc-100">CoinsFolio</Link>
+      <Link href={"/"} className="text-3xl font-semibold text-zinc-100">
+        CoinsFolio
+      </Link>
 
       {!session ? (
         <Link href="/api/auth/signin">

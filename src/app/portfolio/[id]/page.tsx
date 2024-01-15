@@ -11,6 +11,7 @@ import {
   getPortfolioDetailsAsync,
 } from "@/src/state/slices/PortfolioSlice";
 import LoadingSpinner from "../../Components/LoadingSpinner";
+import { Card } from "antd";
 
 type Props = {
   params: {
@@ -33,6 +34,7 @@ const PortfolioPage = ({ params }: Props) => {
       <AddPortfolio />
       <SideBar />
       <AddTranscation />
+
       <Portfolio />
     </main>
   );

@@ -21,7 +21,7 @@ const PortfolioTable = ({}: Props) => {
   return (
     selectedPortfolioCoins.length > 0 && (
       <div className="p2 flex flex-col flex-1 self-stretch">
-        Assets
+        <p className="text-xl my-5 font-semibold">Assets</p>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 200 }} aria-label="simple table">
             <TableHead>

@@ -27,64 +27,68 @@ export async function GET(req: NextRequest) {
                 method: 'GET',
             });
             const data = await coinsPriceResponse.json();
-            console.log(data)
+
+
+
             for (let i = 0; i < portolioWithCoins.length; i++) {
                 const transactions = await prisma.transaction.findMany({
                     where: { portfolioCoinsId: portolioWithCoins[i].id },
                 });
+
+                transactions.sort((a, b) => {
+                    return new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime();
+                })
                 const currentDetails = data[portolioWithCoins[i].coinId]
 
-
-
-
-
-
                 const holdings = transactions
-                .reduce((sum: number, tx: any) => {
-                  if (tx.type === "Sell") return sum - tx.quantity * currentDetails.usd;
-                  return sum + tx.quantity * currentDetails.usd;
-                }, 0)
-                .toFixed(2);
-              const holdingCoins = transactions.reduce((sum: number, tx: any) => {
-                if (tx.type === "Sell") return sum - tx.quantity;
-                return sum + tx.quantity;
-              }, 0);
-            
-              const avgBuyPrice = (
-                transactions.reduce((sum: number, tx: any) => {
-                  if (tx.type === "Sell") return sum;
-                  return sum + tx.quantity * tx.price;
-                }, 0) /
-                transactions.reduce((totalQuantity: number, tx: any) => {
-                  if (tx.type === "Sell") return totalQuantity;
-                  return totalQuantity + tx.quantity;
-                }, 0)
-              ).toFixed(2);
-            
-              const profitLoss = (
-                transactions.reduce((sum: number, tx: any) => {
-                  if (tx.type === "Sell") return sum + tx.quantity * tx.price;
-                  return sum - tx.quantity * tx.price;
-                }, 0) + Number(holdings)
-              ).toFixed(2);
+                    .reduce((sum: number, tx: any) => {
+                        if (tx.type === "Sell") return sum - tx.quantity * currentDetails.usd;
+                        return sum + tx.quantity * currentDetails.usd;
+                    }, 0)
+                    .toFixed(2);
+                const holdingCoins = transactions.reduce((sum: number, tx: any) => {
+                    if (tx.type === "Sell") return sum - tx.quantity;
+                    return sum + tx.quantity;
+                }, 0);
 
+                const avgBuyPrice = (
+                    transactions.reduce((sum: number, tx: any) => {
+                        if (tx.type === "Sell") return sum;
+                        return sum + tx.quantity * tx.price;
+                    }, 0) /
+                    transactions.reduce((totalQuantity: number, tx: any) => {
+                        if (tx.type === "Sell") return totalQuantity;
+                        return totalQuantity + tx.quantity;
+                    }, 0)
+                ).toFixed(2);
+
+                const profitLoss = (
+                    transactions.reduce((sum: number, tx: any) => {
+                        if (tx.type === "Sell") return sum + tx.quantity * tx.price;
+                        return sum - tx.quantity * tx.price;
+                    }, 0) + Number(holdings)
+                ).toFixed(2);
+
+                const TotalBought = transactions.reduce((sum: number, tx: any) => {
+                    if (tx.type !== "Sell") return sum;
+                    return sum + tx.quantity * tx.price;
+                }, 0)
+
+                const profitLostPercentage = (
+                    (Number(profitLoss) / (Number(holdings) + Number(TotalBought) - Number(profitLoss))) *
+                    100
+                ).toFixed(2)
+
+                currentDetails.totalBought = TotalBought
                 currentDetails.holdings = holdings
                 currentDetails.holdingCoins = holdingCoins
                 currentDetails.avgBuyPrice = avgBuyPrice
                 currentDetails.profitLoss = profitLoss
-
-
-
-
-
-
-
-
+                currentDetails.profitLossPercentage = profitLostPercentage
                 result.push({ ...portolioWithCoins[i], transactions, currentDetails })
             }
         }
-        console.log(result, "result")
-        return NextResponse.json({portfolio, result}, { status: 200 });
+        return NextResponse.json({ portfolio, result }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ message: "Error in fetching portfolios" }, { status: 500 });
     } finally {
