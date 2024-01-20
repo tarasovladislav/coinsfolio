@@ -20,7 +20,6 @@ const PortfolioTableRow = ({ coin }: Props) => {
         sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
         onClick={() => {
           router.push(`/portfolio/${coin.portfolioId}/${coin.coinName}`);
-          console.log("clicked");
         }}
       >
         <TableCell component="th" scope="row">

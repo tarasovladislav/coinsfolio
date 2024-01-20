@@ -37,10 +37,10 @@ export async function GET(req: NextRequest) {
                 }
             }
         });
-        return {holdings, coinsAtTime};
+        return { holdings, coinsAtTime };
     }
 
-    
+
     try {
         await connectToDatabase();
         const session = await auth()
@@ -62,6 +62,7 @@ export async function GET(req: NextRequest) {
         const lowestDate = portolioWithCoins.reduce((a, b) => {
             return a.dateTime < b.dateTime ? a : b;
         }).dateTime
+    
 
         let startDate = dayjs(lowestDate).unix();
         switch (days) {
@@ -93,39 +94,12 @@ export async function GET(req: NextRequest) {
                 break;
         }
 
-        // const startDate = dayjs(lowestDate).unix();
-
         const coinsHistoryResponse = await fetch(`https://pro-api.coingecko.com/api/v3/coins/${coin}/market_chart/range?vs_currency=usd&from=${startDate}&to=${endDate}&x_cg_pro_api_key=${process.env.COINGECKO_API}`, {
             method: 'GET',
         });
         const data = await coinsHistoryResponse.json();
         const prices = data.prices
         const portfolioValue = calculateHistoricalPortfolioValue(portolioWithCoins, prices);
-
-
-        // console.log(prices)
-
-
-        //get amounf of coins at the start date
-        // check for transcation of start date 
-        // do first with just a coin, then combine to make it for portfolio
-
-        // get all transactions for the coin
-
-
-
-
-
-        // make a route to get amount of coins in portfolio at the speciiic date? not as route but as function 
-        // get all buys / sells for the coins 
-
-
-        //for graph take the first coin buy date
-
-        // multtiply usd * total quantity of coin 
-
-
-
 
 
         return NextResponse.json(portfolioValue, { status: 200 });

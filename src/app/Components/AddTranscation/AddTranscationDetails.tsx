@@ -106,7 +106,7 @@ const AddTranscationDetails = (props: Props) => {
   return (
     <>
       <Typography id="modal-modal-title" variant="h5" component="h2" className="text-center mb-2">
-        {selectedCoin.name}
+        {selectedCoin && selectedCoin.name}
       </Typography>
       <ButtonGroup variant="outlined" className="flex align-center justify-center mb-4">
         <Button

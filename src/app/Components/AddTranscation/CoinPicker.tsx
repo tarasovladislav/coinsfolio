@@ -1,6 +1,7 @@
 import React, { useState, useEffect, use } from "react";
 import { Typography, TextField } from "@mui/material";
 import CoinSearchResults from "./CoinSearchResults";
+import { AutoComplete } from "antd";
 type Props = {};
 
 const CoinPicker = (props: Props) => {
@@ -20,10 +21,31 @@ const CoinPicker = (props: Props) => {
 
   return (
     <>
+      {/* <Typography id="modal-modal-title" variant="h6" component="h2" className="text-center">
+        Select Coin
+      </Typography>
+      <div className="flex flex-col gap-4">
+        <TextField
+          label="Search"
+          variant="outlined"
+          value={searchQuery}
+          onChange={(e) => handleSearch(e.target.value)}
+        />
+        {searchResults.length > 0 && <CoinSearchResults results={searchResults} />}
+      </div> */}
       <Typography id="modal-modal-title" variant="h6" component="h2" className="text-center">
         Select Coin
       </Typography>
       <div className="flex flex-col gap-4">
+        {/* <AutoComplete
+          options={searchResults}
+          style={{ width: 200 }}
+          // onSelect={onSelect}
+          value={searchQuery}
+          onChange={(text) => handleSearch(text)}
+          placeholder="input here"
+        /> */}
+
         <TextField
           label="Search"
           variant="outlined"

@@ -1,64 +1,81 @@
 "use client";
-import { Button } from "@mui/material";
-
 import React, { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { openModal, getPortfoliosAsync } from "@/src/state/slices/PortfolioListSlice";
-import { setPortfolio, getPortfolioDetailsAsync } from "@/src/state/slices/PortfolioSlice";
+import {
+  openModal,
+  getPortfoliosAsync,
+} from "@/src/state/slices/PortfolioListSlice";
 import { AppDispatch, RootState } from "@/src/state/store";
-import { useRouter } from "next/navigation";
 
 import LoadingSpinner from "@/src/app/Components/LoadingSpinner";
 import SidebarPortfolioItem from "./SidebarPortfolioItem";
-
+import { Empty, Button } from "antd";
+import Link from "next/link";
 
 type Props = {};
 const SideBar = (props: Props) => {
-  const router = useRouter();
-
   const dispatch = useDispatch<AppDispatch>();
-  const { isLoading, portfolios } = useSelector((state: RootState) => state.PortfolioList);
+  const { isLoading, portfolios } = useSelector(
+    (state: RootState) => state.PortfolioList,
+  );
 
   const initialLoad = async () => {
-    dispatch(getPortfoliosAsync()).then((ab) => {
-      if (
-        ab.meta.requestStatus === "rejected" ||
-        !ab.payload?.portfolios ||
-        ab.payload.portfolios.length === 0
-      )
-        return;
-      dispatch(setPortfolio(ab.payload.portfolios[0]));
-      router.push(`/portfolio/${ab.payload.portfolios[0].id}`);
-    });
+    dispatch(getPortfoliosAsync());
   };
 
   useEffect(() => {
     !portfolios.length && initialLoad();
   }, []);
 
-
-  return (
-    <div className=" w-96 flex flex-col bg-gray-500 text-white pt-3 ">
-      {isLoading ? (
-        <LoadingSpinner isLoading={isLoading} />
-      ) : (
-        <Button
-          variant="contained"
-          className="self-center bg-black"
-          color="primary"
-          onClick={() => dispatch(openModal())}
+  if (!portfolios.length && !isLoading)
+    return (
+      <div className="flex flex-1 items-center justify-center">
+        <Empty
+          image="https://gw.alipayobjects.com/zos/antfincdn/ZHrcdLPrvN/empty.svg"
+          imageStyle={{ height: 300 }}
+          description={
+            <span className="text-2xl">Add a Portfolio to get started</span>
+          }
         >
-          Add New Portolio
-        </Button>
-      )}
-      <div className="flex flex-col gap-2 p-2">
-        {portfolios.map((portfolio: any) => {
-          return <SidebarPortfolioItem portfolio={portfolio} key={portfolio.id} />;
-        })}
+          <Button onClick={() => dispatch(openModal())}>Add Portfolio</Button>
+        </Empty>
       </div>
-
-    </div>
+    );
+  return (
+    <>
+      <div className="my-5 flex min-w-64 flex-shrink-0 flex-col overflow-auto bg-gray-200 text-white">
+        {isLoading ? (
+          <LoadingSpinner isLoading={isLoading} />
+        ) : (
+          <>
+            <div className="flex flex-col gap-2 p-2">
+              <div className="flex flex-row items-center justify-between rounded bg-primary hover:bg-tertiary ">
+                <Link
+                  href={`/`}
+                  className="flex flex-1 cursor-pointer flex-col p-2 "
+                >
+                  <div className="font-semibold">Overview</div>
+                </Link>
+              </div>
+            </div>
+            <Button
+              className="self-center"
+              onClick={() => dispatch(openModal())}
+            >
+              Create Portolio
+            </Button>
+          </>
+        )}
+        <div className="flex flex-col gap-2 p-2">
+          {portfolios.map((portfolio: any) => {
+            return (
+              <SidebarPortfolioItem portfolio={portfolio} key={portfolio.id} />
+            );
+          })}
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -33,7 +33,6 @@ const PopConfirm: React.FC<PopConfirmProps> = ({
   };
 
   const handleCancel = () => {
-    console.log("Clicked cancel button");
     setOpen(false);
   };
 

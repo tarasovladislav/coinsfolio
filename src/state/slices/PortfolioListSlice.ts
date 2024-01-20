@@ -7,6 +7,7 @@ interface PortolioListState {
     portfolios: {
         name: string;
         id: string;
+        holdings: number;
     }[];
     isLoading: boolean;
 }

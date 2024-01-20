@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 body {
-    @apply min-h-screen flex flex-col
+    @apply min-h-screen flex flex-col  bg-gray-100 
 }
 main {
-    @apply flex min-h-full h-full flex-1
+    @apply flex min-h-full h-full w-full max-w-screen-2xl self-center
 }

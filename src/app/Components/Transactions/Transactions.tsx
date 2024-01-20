@@ -15,12 +15,17 @@ type Props = {
 
 const Transactions = (props: Props) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { selectedPortfolioCoins } = useSelector((state: RootState) => state.Portfolio);
-  const tx = selectedPortfolioCoins.find((coin: any) => coin.coinName === props.coinId);
-  const router = useRouter();
+  const { selectedPortfolioCoins } = useSelector(
+    (state: RootState) => state.Portfolio,
+  );
 
+  const tx = selectedPortfolioCoins.find(
+    (coin: any) => coin.coinName === props.coinId,
+  );
+  const router = useRouter();
+  console.log(selectedPortfolioCoins, "selectedPortfolioCoins");
   return (
-    <div className="flex flex-1 flex-col  m-5">
+    <div className="m-5 flex flex-1  flex-col">
       {tx && (
         <>
           <Button onClick={() => router.back()} className="mb-5 self-start">
@@ -30,12 +35,16 @@ const Transactions = (props: Props) => {
           <div className="flex justify-between">
             <div>
               <h1 className="text-lg text-gray-400">{tx.coinName}</h1>
-              <p className="font-bold text-3xl">${tx.currentDetails.holdings}</p>
+              <p className="text-3xl font-bold">
+                ${tx.currentDetails.holdings}
+              </p>
             </div>
-            <Button onClick={() => dispatch(openModal())}>Add Transcation</Button>
+            <Button onClick={() => dispatch(openModal())} className="self-end">
+              Add Transcation
+            </Button>
           </div>
 
-          <div className="flex gap-5 self-start my-5">
+          <div className="my-5 flex gap-5 self-start">
             <Card className="px-3" size="small">
               <p className="font-300  text-gray-400">Quantity</p>
               <p className="text-2xl font-bold">
@@ -44,26 +53,32 @@ const Transactions = (props: Props) => {
             </Card>
             <Card className="px-3" size="small">
               <p className="font-medium text-gray-400">Avg. buy price</p>
-              <p className="text-2xl font-bold">${tx.currentDetails.avgBuyPrice}</p>
+              <p className="text-2xl font-bold">
+                ${tx.currentDetails.avgBuyPrice}
+              </p>
             </Card>
             <Card className="px-3" size="small">
               <p className="font-medium  text-gray-400">Total profit / loss</p>
               {Number(tx.currentDetails.profitLoss) >= 0 ? (
                 <>
-                  <p className="text-green-500 mr-2 text-2xl font-bold">
-                    + ${Math.abs(Number(tx.currentDetails.profitLoss)).toFixed(2)}
+                  <p className="mr-2 text-2xl font-bold text-green-500">
+                    + $
+                    {Math.abs(Number(tx.currentDetails.profitLoss)).toFixed(2)}
                   </p>
                   <p className="text-green-500">
-                    ▲ {Math.abs(Number(tx.currentDetails.profitLossPercentage))}%
+                    ▲ {Math.abs(Number(tx.currentDetails.profitLossPercentage))}
+                    %
                   </p>
                 </>
               ) : (
                 <>
-                  <p className="text-red-500 mr-2 text-2xl font-bold">
-                    - ${Math.abs(Number(tx.currentDetails.profitLoss)).toFixed(2)}
+                  <p className="mr-2 text-2xl font-bold text-red-500">
+                    - $
+                    {Math.abs(Number(tx.currentDetails.profitLoss)).toFixed(2)}
                   </p>
                   <p className="text-red-500">
-                    ▼ {Math.abs(Number(tx.currentDetails.profitLossPercentage))}%
+                    ▼ {Math.abs(Number(tx.currentDetails.profitLossPercentage))}
+                    %
                   </p>
                 </>
               )}
@@ -72,7 +87,9 @@ const Transactions = (props: Props) => {
 
           <Chart tx={tx} />
 
-          {tx.transactions.length > 0 && <TransactionTable transactions={tx.transactions} />}
+          {tx.transactions.length > 0 && (
+            <TransactionTable transactions={tx.transactions} />
+          )}
         </>
       )}
     </div>

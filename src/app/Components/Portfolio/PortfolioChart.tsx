@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Chart, { defaults } from "chart.js/auto";
 import { Line } from "react-chartjs-2";
-import { Button, Card } from "antd";
+import { Button, Card, Segmented } from "antd";
 import { AppDispatch } from "@/src/state/store";
 import { useDispatch } from "react-redux";
 import { Resizable } from "react-resizable";
+import EmptyChart from "../EmptyChart";
 
 type Props = {
   portfolio: any;
@@ -14,106 +15,76 @@ defaults.interaction.mode = "index";
 defaults.interaction.intersect = false;
 defaults.responsive = true;
 const PortfolioChart = ({ portfolio }: Props) => {
-  const ButtonGroup = Button.Group;
-
   const [data, setData] = useState([]);
   const [historyDays, setHistoryDays] = useState<string | number>("All");
 
+  const [isLoading, setIsLoading] = useState(false);
+
+  const abortController = useRef<AbortController | null>(null);
+
   useEffect(() => {
+    // setIsLoading(true);
     const fetchHistory = async () => {
+      abortController.current && abortController.current.abort();
+      abortController.current = new AbortController();
       try {
+        setIsLoading(true);
         const response = await fetch(
-          `/api/history?portfolioId=${portfolio.id}&days=${historyDays}`
+          `/api/history?portfolioId=${portfolio.id}&days=${historyDays}`,
+          {
+            signal: abortController.current.signal,
+          },
         );
         const dat = await response.json();
-        console.log(dat, "data");
         setData(dat);
+        console.log(dat);
+        setIsLoading(false);
       } catch (error) {
         console.log(error);
+        setIsLoading(true);
+      } finally {
       }
     };
 
     fetchHistory();
   }, [historyDays]);
 
+  if (data.length === 0) {
+    return <EmptyChart />;
+  }
+
   return (
-    data &&
-    data.length > 0 && (
-      <Card>
+    data && (
+      <Card className="flex-1"> 
         <div className="flex flex-row justify-between">
           <span className="text-xl font-semibold">History</span>
-          <ButtonGroup>
-            <Button
-              onClick={() => {
-                setHistoryDays(1);
-              }}
-              className="w-1/5"
-              style={{
-                backgroundColor: historyDays === 1 ? "#343434" : "",
-                color: historyDays === 1 ? "#fff" : "",
-              }}
-            >
-              24H
-            </Button>
-            <Button
-              onClick={() => {
-                setHistoryDays(7);
-              }}
-              className="w-1/5"
-              style={{
-                backgroundColor: historyDays === 7 ? "#343434" : "",
-                color: historyDays === 7 ? "#fff" : "",
-              }}
-            >
-              7D
-            </Button>
-            <Button
-              onClick={() => {
-                setHistoryDays(30);
-              }}
-              className="w-1/5"
-              style={{
-                backgroundColor: historyDays === 30 ? "#343434" : "",
-                color: historyDays === 30 ? "#fff" : "",
-              }}
-            >
-              30D
-            </Button>
-            <Button
-              onClick={() => {
-                setHistoryDays(90);
-              }}
-              className="w-1/5"
-              style={{
-                backgroundColor: historyDays === 90 ? "#343434" : "",
-                color: historyDays === 90 ? "#fff" : "",
-              }}
-            >
-              90D
-            </Button>
-            <Button
-              className="w-1/5"
-              style={{
-                backgroundColor: historyDays === "All" ? "#343434" : "",
-                color: historyDays === "All" ? "#fff" : "",
-              }}
-              onClick={() => {
+          <Segmented
+            options={["24H", "7D", "30D", "90D", "All"]}
+            defaultValue="All"
+            onChange={(e) => {
+              if (e === "All") {
                 setHistoryDays("All");
-              }}
-            >
-              All
-            </Button>
-          </ButtonGroup>
+              } else if (e === "24H") {
+                setHistoryDays(1);
+              } else {
+                setHistoryDays(String(e).replace("D", ""));
+              }
+            }}
+          />
         </div>
+
         <div
-          className="flex flex-col items-center flex-shrink"
-          style={{ position: "relative", height: "400px", width: "99%" }}
+          className="flex flex-shrink flex-col items-center"
+          style={{ position: "relative", height: "300px", width: "99%" }}
         >
           {data.length > 0 && (
             <Line
+              className={`${isLoading ? "blur-lg" : ""}`}
               //   onMouseLeave={() => setHoldingsAtTime(0)}
               data={{
-                labels: data.map((entry) => new Date(entry.timeDate).toLocaleDateString()),
+                labels: data.map((entry) =>
+                  new Date(entry.timeDate).toLocaleDateString(),
+                ),
                 datasets: [
                   {
                     label: "USD",
@@ -146,20 +117,6 @@ const PortfolioChart = ({ portfolio }: Props) => {
                     },
                   },
                 },
-                // plugins: {
-                //   tooltip: {
-                //     callbacks: {
-                //       label: function (context: any) {
-                //         if (context.dataset.label === "Coins") {
-                //           return context.parsed.y.toFixed(2) + ` ${tx.coinSymbol.toUpperCase()}`;
-                //         } else if (context.dataset.label === "USD") {
-                //           //   setHoldingsAtTime(context.parsed.y);
-                //           return "$" + context.parsed.y.toFixed(2);
-                //         }
-                //       },
-                //     },
-                //   },
-                // },
               }}
             />
           )}

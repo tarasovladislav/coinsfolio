@@ -9,9 +9,9 @@ import { AppDispatch, RootState } from "@/src/state/store";
 import {
   setSelectedPortfolioCoins,
   getPortfolioDetailsAsync,
+  setPortfolio,
 } from "@/src/state/slices/PortfolioSlice";
 import LoadingSpinner from "../../Components/LoadingSpinner";
-import { Card } from "antd";
 
 type Props = {
   params: {
@@ -21,21 +21,28 @@ type Props = {
 
 const PortfolioPage = ({ params }: Props) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { selectedPortfolioCoins, isLoading } = useSelector((state: RootState) => state.Portfolio);
+  const { isLoading, portfolio } = useSelector(
+    (state: RootState) => state.Portfolio,
+  );
+  const { portfolios } = useSelector((state: RootState) => state.PortfolioList);
   const id = params.id;
 
   useEffect(() => {
+    const portfolioFromParams = portfolios.find(
+      (portfolio) => portfolio.id === id,
+    );
+    dispatch(setPortfolio(portfolioFromParams));
     dispatch(getPortfolioDetailsAsync(id));
-  }, []);
+  }, [id, portfolios]);
 
   return (
-    <main className="flex flex-row flex-grow min-h-grow">
+    <main className=" flex flex-col md:flex-row">
       {isLoading && <LoadingSpinner isLoading={isLoading} />}
       <AddPortfolio />
       <SideBar />
       <AddTranscation />
 
-      <Portfolio />
+      {portfolio && <Portfolio />}
     </main>
   );
 };
