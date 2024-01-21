@@ -45,23 +45,23 @@ const Transactions = (props: Props) => {
           </div>
 
           <div className="my-5 flex gap-5 self-start">
-            <Card className="px-3" size="small">
+            <Card className="px-3 md:px-0  lg:px-3" size="small">
               <p className="font-300  text-gray-400">Quantity</p>
-              <p className="text-2xl font-bold">
+              <p className="text-2xl font-bold md:text-xl">
                 {tx.currentDetails.holdingCoins} {tx.coinSymbol.toUpperCase()}
               </p>
             </Card>
-            <Card className="px-3" size="small">
+            <Card className="px-3 md:px-0  lg:px-3" size="small">
               <p className="font-medium text-gray-400">Avg. buy price</p>
-              <p className="text-2xl font-bold">
+              <p className="text-2xl font-bold md:text-xl">
                 ${tx.currentDetails.avgBuyPrice}
               </p>
             </Card>
-            <Card className="px-3" size="small">
+            <Card className="px-3 md:px-0  lg:px-3" size="small">
               <p className="font-medium  text-gray-400">Total profit / loss</p>
               {Number(tx.currentDetails.profitLoss) >= 0 ? (
                 <>
-                  <p className="mr-2 text-2xl font-bold text-green-500">
+                  <p className="mr-2 text-2xl font-bold text-green-500 md:text-xl">
                     + $
                     {Math.abs(Number(tx.currentDetails.profitLoss)).toFixed(2)}
                   </p>

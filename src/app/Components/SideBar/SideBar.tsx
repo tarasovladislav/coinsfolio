@@ -44,13 +44,13 @@ const SideBar = (props: Props) => {
     );
   return (
     <>
-      <div className="my-5 flex min-w-64 flex-shrink-0 flex-col overflow-auto bg-gray-200 text-white">
+      <div className="my-5 flex min-w-64 flex-col overflow-auto bg-gray-200 text-white max-h-[500px]">
         {isLoading ? (
           <LoadingSpinner isLoading={isLoading} />
         ) : (
           <>
-            <div className="flex flex-col gap-2 p-2">
-              <div className="flex flex-row items-center justify-between rounded bg-primary hover:bg-tertiary ">
+            <div className="flex flex-col gap-2 p-2 ">
+              <div className="flex flex-row items-center justify-between rounded bg-primary hover:bg-tertiary  ">
                 <Link
                   href={`/`}
                   className="flex flex-1 cursor-pointer flex-col p-2 "
